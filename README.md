@@ -43,6 +43,8 @@ We are going to setup an AWS Client VPN in US East (N. Virginia), let's get star
 
 > Note: We will launch an EC2 instance into this subnet for a connectivity test at the end. 
 
+---
+
 <a name="auth"></a>
 ### Step 2. Authentication
 Client VPN uses Authentication as the first point of entry into the AWS cloud. There are three ways to authenticate, we are going to use Mutual authenticaiton (certificate-based) 
@@ -51,6 +53,7 @@ Client VPN uses Authentication as the first point of entry into the AWS cloud. T
 * [Mutual authentication (certificate-based)](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/client-authentication.html#mutual)
 * [Single sign-on (SAML-based federated authentication) (user-based)](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/client-authentication.html#federated-authentication)
 
+---
 
 <a name="certs"></a>
 #### Generate Certificates
@@ -64,6 +67,8 @@ chmod 755 generate_certs.sh
 ./generate_certs.sh
 ```
 > Tip: Enter a `directory` name and then you could press ENTER at `Common Name` or provide a name
+
+---
 
 <a name="upload"></a>
 #### Upload Certificates to ACM
@@ -81,6 +86,8 @@ aws acm import-certificate --certificate fileb://server.crt --private-key fileb:
 ```
 aws acm import-certificate --certificate fileb://client1.domain.tld.crt --private-key fileb://client1.domain.tld.key --certificate-chain fileb://ca.crt
 ```
+
+---
 
 <a name="vpnendpoint"></a>
 ### Step 3. Create a Client VPN endpoint
@@ -103,6 +110,8 @@ aws acm import-certificate --certificate fileb://client1.domain.tld.crt --privat
 ![SplitTunnel](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/rby3x930newghg2tiake.png)
 
 The status of Client VPN endpoint will be in `pending-associate` at this stage.
+
+---
 
 <a name="enable"></a>
 ### Step 4. Enable VPN connectivity for clients
@@ -132,6 +141,8 @@ The following are created when we associate the Client VPN Enpoint with the firs
 
 ![Security Group](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3xfqsvoc361v6y8jrzxk.png)
 
+---
+
 <a name="authclients"></a>
 ### Step 5. Authorize clients to access a network
 1. Navigate to `VPC Console` > `Client VPN Enpoints` > Choose `Clinet VPN EndPoint` > Click `Authorization` > Click `Authorize Ingress`
@@ -140,10 +151,14 @@ The following are created when we associate the Client VPN Enpoint with the firs
 
 ![Add authorization rule](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/4q3jdintllcob0t3rsyq.png)
 
+---
+
 <a name="optional"></a>
 ### Step 6. (Optional) Enable access to additional networks
 You can enable access to additional networks connected to the VPC, such as AWS services, peered VPCs, and on-premises networks. For each additional network, you must add a route to the network and configure an authorization rule to give clients access.
 More information at Step 5 of [Getting started with Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/cvpn-getting-started.html#cvpn-getting-started-endpoint)
+
+---
 
 <a name="download"></a>
 ### Step 7. Download the Client VPN endpoint configuration file
@@ -166,6 +181,10 @@ remote srivpc.cvpn-endpoint-072a9dd48228b525b.prod.clientvpn.us-east-1.amazonaws
 4. Save the file.
 5. You could distribute the Client VPN endpoint configuration file to your clients if required.
 
+[Sample Client VPN endpoint configuraiton file](https://github.com/kasukur/clientvpn/blob/main/downloaded-client-config-nv.ovpn)
+
+---
+
 <a name="connect"></a>
 ### Step 8: Connect to the Client VPN Endpoint
 
@@ -178,6 +197,8 @@ remote srivpc.cvpn-endpoint-072a9dd48228b525b.prod.clientvpn.us-east-1.amazonaws
 4. Enter `Display Name`, Select `VPN Configuration File` and click `VPN Configuration File`
 ![Add Profile](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/62kneb6zhoz81o8skzto.png)
 5. Click Connect.
+
+---
 
 <a name="test"></a>
 ### Step 9: Testing
@@ -192,12 +213,16 @@ remote srivpc.cvpn-endpoint-072a9dd48228b525b.prod.clientvpn.us-east-1.amazonaws
 
 ![EC2 Test](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/tuudt41yperpiqndchk4.png)
 
+---
+
 <a name="scaling"></a>
 ### Client VPN scaling considerations
 
 [Source] (https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/scaling-considerations.html)
 
 The maximum number of concurrent VPN connections depends on the following
+
+---
 
 <a name="cidr"></a>
 #### Client CIDR range size
@@ -208,6 +233,8 @@ The maximum number of concurrent VPN connections depends on the following
 - A portion of the addresses in the client CIDR range are also used to support the availability model of the Client VPN endpoint, and cannot be assigned to clients. 
 - We cannot change the client CIDR range after you create the Client VPN endpoint.
 
+---
+
 <a name="number"></a>
 #### Number of associated subnets
 
@@ -217,6 +244,8 @@ The maximum number of concurrent VPN connections depends on the following
 - For example, if you expect to support 4,000 VPN connections to your Client VPN endpoint, specify a minimum client CIDR range size of /19 (8,192 IP addresses), and associate at least 2 subnets with the Client VPN endpoint.
 - If you’re unsure what the number of expected VPN connections is for your Client VPN endpoint, we recommend that you specify a size /16 CIDR block or larger.
 
+---
+
 <a name="cost"></a>
 ### Cost
 For US East (N. Virginia)
@@ -224,8 +253,12 @@ For US East (N. Virginia)
 - AWS Client VPN connection	$0.05 per hour
 - There is a cost for an `Asscociated VPN Endpoint` even when not in use, so `Disassociate` when not in use. 
 
+---
+
 <a name="referrals"></a>
 ### Referrals
 - [Authentication](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/client-authentication.html#mutual)
 - [Getting started with Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/cvpn-getting-started.html)
 
+
+---
