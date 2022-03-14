@@ -1,3 +1,5 @@
+# How to setup an AWS Client VPN
+
 AWS Client VPN is a managed client-based VPN service that enables you to securely access your AWS resources and resources in your on-premises network. With Client VPN, you can access your resources from any location using an OpenVPN-based VPN client.
 
 This was an assignment during [SAA Certification Bootcamp- E9 - Networking Services] (https://youtu.be/ES7inmRo2Is?t=7071)
