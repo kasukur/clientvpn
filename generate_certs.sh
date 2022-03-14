@@ -49,7 +49,7 @@ cp pki/private/client1.domain.tld.key ~/$folder/
 
 echo -e "cd ~/$folder/"
 cd ~/$folder/
-
+exec bash
 
 
 
