@@ -59,7 +59,8 @@ Client VPN uses Authentication as the first point of entry into the AWS cloud. T
 #### Generate Certificates
 
 ```
-git clone https://github.com/aws-samples/aws-serverless-webapp-workshop.git
+git clone https://github.com/kasukur/clientvpn.git
+cd clientvpn
 ```
 
 ```
